@@ -30,7 +30,30 @@ Some prompts to answer:
 You can include a simple diagram or bullet list if helpful.
 
 ---
-
+*
+Platforms like Spotify use multi-layered deep learning, most rely on a two-step process of Scoring and Ranking. Scoring is like predicting our affinity for a single song, where as Ranking is assembling a diverse list.
+My simulation will prioritize Content-based filtering, assuming that the "DNA" of our past favorites is the best predictor of what we'll enjoy next. The system will calculate the distance between a user's ideal profile and a song's attributes to identify matches that feel mathematically similar.
+Song and User Profile objects will track features such as:
+- Song has categorical tags (genre, mood - for filtering) and numerical attributes (energy, valence, acousticness, tempo_bpm)
+- User Profile has preference vector, favorite genres and interaction history
+The Recommender will calculate a similarity score by comparing the UserProfile targets against the song attributes.
+Once all songs are scored, the system will sort the songs from highest to lowest scores, filer out songs already present in the UserProfile history, then select the top 3 results to present to the user.
+*
+The Algorithm Recipe
+My recommender uses a Weighted Content-Based Filtering approach. It evaluates every song in the database against a User Profile using a point-based scoring system:
+- Genre Alignment (Weight: 2.0): If the song's genre matches the user's favorite, it receives a flat 2.0 point boost. This ensures the results stay within the user's primary musical lane.
+- Mood Alignment (Weight: 1.0): A match in mood provides a 1.0 point boost to ensure the emotional vibe is correct.
+- Energy Precision (Weight: 1.5): Uses the formula (1.0 - abs(Target - Actual)) * 1.5. This rewards songs that are mathematically closest to the user's requested intensity.
+- Acoustic Texture (Weight: 0.5): Uses the same distance formula as energy but with a lower weight. This fine-tunes the sound of the recommendation without being too restrictive.
+*
+Data Flow:
+- Input: The system accepts a UserProfile dictionary containing target values like favorite_genre, target_mood, and target_energy.
+- Process: It loops through the songs.csv file, calculating a unique similarity score for every single track using the recipe above.
+- Output: The tracks are sorted by score from highest to lowest, and the Top K (highest scoring) tracks are returned to the user.
+*
+Potential biases
+- Genre Over-Prioritization: Because Genre is weighted at 2.0, which is higher than any other single factor, the system may ignore a song that is a perfect match for mood and energy simply because it falls under a different genre label.
+- The Cold Start for New Genres: If a user has not listed a specific genre in their favorites, even a perfect song in that genre will start at a 2.0 point disadvantage compared to mediocre songs in their favorite genre, making it harder to discover new styles.
 ## Getting Started
 
 ### Setup
