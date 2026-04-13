@@ -1,0 +1,4 @@
+**Question: Phase 4 - Step 5**
+Compare differences between pairs
+- The Gym profile successfully filtered for high-energy EDM and Pop (scores > 3.0), while the Coffee Shop profile correctly shifted to high-acousticness Jazz and Folk. This confirms the numerical similarity logic for energy and texture is valid. The main difference was the "Acousticness" score; it acted as a gatekeeper that prevented digital EDM from entering the "Organic" Coffee Shop list.
+- The Deep Work profile was highly accurate because the user's genre (Lofi) naturally matched the target energy (0.40). However, the Adversarial test showed a conflict: when a user wants "Aggressive Metal" but "Low Energy," the 2.0 genre weight keeps the Metal song at the top despite the energy mismatch. This suggests that for mood-based apps, Energy should perhaps be weighted higher than Genre.

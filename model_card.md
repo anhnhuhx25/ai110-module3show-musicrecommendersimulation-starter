@@ -2,110 +2,38 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+**Anh Nhu's DeepWork Recommender 1.0**  
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
-
-Prompts:  
-
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
-
----
+This model generates music suggestions for a student environment. It assumes the user has specific goals (like deep focus or a gym session) and wants music that matches the technical "vibe" (energy and texture) of those activities. This is for classroom exploration to understand how weights affect user choice.
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
-
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
-
----
+The system uses a "Point Recipe." It gives high points if the category (Genre/Mood) matches exactly. Then, it looks at the math behind the song: it calculates how far the song's energy and acoustic levels are from the user's "ideal" number. The closer the math, the higher the score. I changed the starter logic by adding "Acousticness" as a fine-tuning feature and weighting "Energy" more heavily to ensure the pace of the music matches the user's activity.
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
-
-Prompts:  
-
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
-
----
+The catalog contains 20 songs. It represents a wide range from Lofi and Ambient to Metal and Reggae. I expanded the data from the original 10 songs to include more diverse genres like Classical and EDM to see if the model could handle extreme differences in energy.
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
-
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
-
----
+The system is very strong at "Genre Locking." If you know you want Lofi, it will reliably find the best Lofi. It also correctly separates high-energy digital music from low-energy acoustic music, which matched my intuition for the "Gym" vs "Coffee Shop" tests.
 
 ## 6. Limitations and Bias 
 
-Where the system struggles or behaves unfairly. 
-
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
-
----
+The system currently exhibits a heavy 'Genre Anchor' bias. Because the Genre match is weighted at 2.0, the recommender often ignores songs with perfect mood and energy matches if they fall outside the user's favorite genre. Additionally, the dataset is limited to 20 songs, which creates 'recommendation deserts' for users with niche preferences, such as high-energy classical music or low-energy metal.
 
 ## 7. Evaluation  
 
-How you checked whether the recommender behaved as expected. 
-
-Prompts:  
-
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
-
----
+I tested four profiles: Deep Work, Gym Hero, Coffee Shop, and an "Adversarial" Metal profile. I looked for whether the top results actually matched the activity. I was surprised by the "Adversarial" test; even when I asked for very low energy, the "Metal" genre tag was so strong that it kept a high-energy song at #1. This showed me that categorical labels can sometimes "bully" the numerical data in an algorithm.
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
-
----
+Next, I would add a "Diversity Ranker" to ensure the top 5 results aren't all from the same artist. I would also like to implement a "Tempo Matcher" that uses actual BPM to help users find music for specific running paces.
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
-
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+I learned that recommendation systems aren't "magic"—they are just a series of weighted math problems. It was interesting to see how a single number (a weight) can completely change what a user sees. It made me realize how much control engineers have over our "filter bubbles" in apps like Spotify.

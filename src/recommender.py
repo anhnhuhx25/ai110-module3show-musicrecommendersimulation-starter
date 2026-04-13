@@ -49,7 +49,7 @@ class Recommender:
         return "Explanation placeholder"
 
 def load_songs(csv_path: str) -> List[Dict]:
-    """Loads songs from a CSV file and converts numerical strings to floats."""
+    """Reads a CSV file and returns a list of song dictionaries with numerical values converted to floats."""
     songs = []
     try:
         with open(csv_path, mode='r', encoding='utf-8') as f:

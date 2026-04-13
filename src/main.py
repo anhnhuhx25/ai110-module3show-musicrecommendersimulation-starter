@@ -1,69 +1,60 @@
 """
-Command line runner for the Music Recommender Simulation.
+Command line runner for the Music Recommender Simulation - Table Edition.
 """
+from tabulate import tabulate
 from src.recommender import load_songs, recommend_songs
 
 def main() -> None:
-    # 1. Load Data
+    # 1. Load the data
     songs = load_songs("data/songs.csv") 
 
-    # 2. Define the Taste Profile (Optimized for Deep Work)
-    user_prefs = {
-        "favorite_genre": "lofi", 
-        "target_mood": "chill", 
-        "target_energy": 0.40,        # Tuned to capture the center of the lofi cluster
-        "target_acousticness": 0.60   # Tuned to allow some synth-based tracks
-    }
+    # 2. Define all four stress-test profiles
+    profiles = [
+        ("DEEP WORK", {
+            "favorite_genre": "lofi", "target_mood": "chill", 
+            "target_energy": 0.40, "target_acousticness": 0.60
+        }),
+        ("GYM HERO", {
+            "favorite_genre": "pop", "target_mood": "intense", 
+            "target_energy": 0.95, "target_acousticness": 0.10
+        }),
+        ("COFFEE SHOP", {
+            "favorite_genre": "jazz", "target_mood": "relaxed", 
+            "target_energy": 0.30, "target_acousticness": 0.90
+        }),
+        ("ADVERSARIAL", {
+            "favorite_genre": "metal", "target_mood": "aggressive", 
+            "target_energy": 0.10, "target_acousticness": 0.05
+        })
+    ]
 
-    # 3. Generate Recommendations (k=3)
-    recommendations = recommend_songs(user_prefs, songs, k=3)
+    print("\n" + "="*80)
+    print("           ANH NHU'S SYSTEM EVALUATION - MASTER TABLE")
+    print("="*80)
 
-    # 4. Format Output for Terminal
-    print("\n" + "="*50)
-    print("      ANH NHU'S MUSIC RECOMMENDATION ENGINE")
-    print("="*50)
-    
-    for i, rec in enumerate(recommendations, 1):
-        song, score, explanation = rec
-        print(f"{i}. {song['title'].upper()} by {song['artist']}")
-        print(f"   [FINAL SCORE: {score}]")
-        print(f"   REASONS: {explanation}")
-        print("-" * 50)
+    # 3. Loop through each profile and generate a table
+    for name, prefs in profiles:
+        print(f"\n\nRESULTS FOR PROFILE: {name}")
+        
+        # Get the top 5 results
+        recommendations = recommend_songs(prefs, songs, k=5)
+        
+        # Prepare the list for tabulate
+        table_data = []
+        for i, (song, score, explanation) in enumerate(recommendations, 1):
+            table_data.append([
+                i, 
+                song['title'], 
+                song['artist'], 
+                f"{score:.2f}", 
+                explanation
+            ])
+        
+        # Define table headers
+        headers = ["#", "Title", "Artist", "Score", "Reasoning (Algorithm Breakdown)"]
+        
+        # Print the professional grid
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
 if __name__ == "__main__":
     main()
-
-# """
-# Command line runner for the Music Recommender Simulation.
-# """
-
-# from recommender import load_songs, recommend_songs
-
-# def main() -> None:
-#     # Load the expanded dataset
-#     songs = load_songs("data/songs.csv") 
-
-#     # Adjusted Taste Profile based on critique
-#     # We raised energy to 0.40 and lowered acousticness to 0.60
-#     user_prefs = {
-#         "favorite_genre": "lofi", 
-#         "target_mood": "chill", 
-#         "target_energy": 0.40,
-#         "target_acousticness": 0.60
-#     }
-
-#     # Get the top 3 recommendations
-#     recommendations = recommend_songs(user_prefs, songs, k=3)
-
-#     print("\nTop recommendations for your session:\n")
-#     if not recommendations:
-#         print("No songs found. Make sure load_songs is implemented!")
-    
-#     for rec in recommendations:
-#         song, score, explanation = rec
-#         print(f"{song['title']} by {song['artist']}")
-#         print(f"Score: {score:.2f} | Reasoning: {explanation}")
-#         print("-" * 30)
-
-# if __name__ == "__main__":
-#     main()
