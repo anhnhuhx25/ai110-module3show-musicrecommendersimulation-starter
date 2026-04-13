@@ -54,6 +54,9 @@ Data Flow:
 Potential biases
 - Genre Over-Prioritization: Because Genre is weighted at 2.0, which is higher than any other single factor, the system may ignore a song that is a perfect match for mood and energy simply because it falls under a different genre label.
 - The Cold Start for New Genres: If a user has not listed a specific genre in their favorites, even a perfect song in that genre will start at a 2.0 point disadvantage compared to mediocre songs in their favorite genre, making it harder to discover new styles.
+
+![Terminal Output Results](recommendation_output.jpg)
+
 ## Getting Started
 
 ### Setup
